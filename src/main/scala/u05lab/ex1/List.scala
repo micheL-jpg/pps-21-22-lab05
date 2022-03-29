@@ -64,7 +64,16 @@ enum List[A]:
     for i <- 0 until length do l = (get(i).get, i) :: l
     l.reverse()
 
-  def partition(pred: A => Boolean): (List[A], List[A]) = ???
+  def partition(pred: A => Boolean): (List[A], List[A]) = (this.filter(pred), this.filter(c => !pred(c)))
+
+  //    this match
+//    case h :: t if pred(h) =>
+//      val (tr, fa) = t.partition(pred)
+//      (h :: tr, fa)
+//    case h :: t =>
+//      val (tr, fa) = t.partition(pred)
+//      (tr, h :: fa)
+//    case _ => (Nil(), Nil())
 
   def span(pred: A => Boolean): (List[A], List[A]) = ???
 
