@@ -57,7 +57,12 @@ enum List[A]:
     case _ => false
 
   def reverse(): List[A] = foldLeft[List[A]](Nil())((l, e) => e :: l)
-
+  
+  def collect[B](f: PartialFunction[A, B]): List[B] = this match
+    case h :: t if f.isDefinedAt(h) => f(h) :: t.collect(f)
+    case h :: t => t.collect(f)
+    case _ => Nil()
+  
   /** EXERCISES */
   def zipRight: List[(A, Int)] =
     var l: List[(A, Int)] = Nil()

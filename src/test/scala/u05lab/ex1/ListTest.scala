@@ -26,4 +26,18 @@ class ListTest {
     assertEquals(List(3,4), reference.takeRightWithNoReverse(2))
     assertEquals(List(2,3,4), reference.takeRightWithNoReverse(3))
 
+  @Test def testCollectIntToInt(): Unit =
+    val f: PartialFunction[Int, Int] = {
+      case d if d != 0 => 24 / d
+    }
+    assertEquals(List(24,12,8), List(0,1,2,3) collect f)
+
+  @Test def testCollectIntToString(): Unit =
+    val convert1to2: PartialFunction[Int, String] = new PartialFunction[Int, String] {
+      val nums: Array[String] = Array("one", "two")
+      def apply(i: Int): String = nums(i-1)
+      def isDefinedAt(i: Int): Boolean = i > 0 && i < 3
+    }
+    assertEquals(List("one","two"), List(0,1,2,3) collect convert1to2)
+
 }
