@@ -91,6 +91,12 @@ enum List[A]:
   def takeRightWithNoReverse(n: Int): List[A] =
     zipRight.filter((_,c) => c > length - n - 1).map((e,_) => e)
 
+  def takeRightWithCollect(n: Int): List[A] =
+    val f: PartialFunction[(A, Int), A] = {
+      case (e, c) if c > length - n - 1 => e
+    }
+    zipRight.collect(f)
+
 // Factories
 object List:
 

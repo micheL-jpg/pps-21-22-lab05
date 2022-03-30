@@ -25,6 +25,8 @@ class ListTest {
     assertEquals(List(3,4), reference.takeRight(2))
     assertEquals(List(3,4), reference.takeRightWithNoReverse(2))
     assertEquals(List(2,3,4), reference.takeRightWithNoReverse(3))
+    assertEquals(List(3,4), reference.takeRightWithCollect(2))
+    assertEquals(List(2,3,4), reference.takeRightWithCollect(3))
 
   @Test def testCollectIntToInt(): Unit =
     val f: PartialFunction[Int, Int] = {
