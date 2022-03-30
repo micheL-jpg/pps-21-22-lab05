@@ -75,9 +75,15 @@ enum List[A]:
     _span(this, Nil())
 
   /** @throws UnsupportedOperationException if the list is empty */
-  def reduce(op: (A, A) => A): A = ???
+  def reduce(op: (A, A) => A): A = this match
+    case Nil() => throw UnsupportedOperationException()
+    case h :: t => t.foldLeft(h)(op)
 
-  def takeRight(n: Int): List[A] = ???
+  def takeRight(n: Int): List[A] =
+    reverse().zipRight.filter((_,c) => c < n).map((e,_) => e).reverse()
+
+  def takeRightWithNoReverse(n: Int): List[A] =
+    zipRight.filter((_,c) => c > length - n - 1).map((e,_) => e)
 
 // Factories
 object List:

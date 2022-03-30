@@ -17,4 +17,13 @@ class ListTest {
   @Test def testSpan(): Unit =
     assertEquals((List(1,2), List(3,4)), reference.span(_ < 3))
 
+  @Test def testReduce(): Unit =
+    assertThrows(classOf[UnsupportedOperationException], () => List.Nil[Int]().reduce(_ + _))
+    assertEquals(10, reference.reduce(_ + _))
+
+  @Test def testTakeRight(): Unit =
+    assertEquals(List(3,4), reference.takeRight(2))
+    assertEquals(List(3,4), reference.takeRightWithNoReverse(2))
+    assertEquals(List(2,3,4), reference.takeRightWithNoReverse(3))
+
 }
