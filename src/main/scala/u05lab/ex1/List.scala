@@ -80,7 +80,7 @@ enum List[A]:
     (this.filter(pred), this.filter(!pred(_)))
 
   def partitionWithFold(pred: A => Boolean): (List[A], List[A]) =
-    foldLeft((Nil(), Nil()))((tuple, e) => if pred(e) then (tuple._1 append List(e), tuple._2) else (tuple._1, tuple._2 append List(e)))
+    foldRight((Nil(), Nil()))((e, tuple) => if pred(e) then (e :: tuple._1, tuple._2) else (tuple._1, e :: tuple._2))
 
   def span(pred: A => Boolean): (List[A], List[A]) =
     @tailrec
