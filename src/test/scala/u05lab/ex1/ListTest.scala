@@ -10,6 +10,8 @@ class ListTest {
   @Test
   def testZipRight(): Unit =
     assertEquals(List((1, 0), (2, 1), (3, 2), (4, 3)), reference.zipRight)
+    assertEquals(List((1, 0), (2, 1), (3, 2), (4, 3)), reference.zipRightWithFold)
+    assertEquals(List((1, 0), (2, 1), (3, 2), (4, 3)), reference.zipRightWithMap)
 
   @Test def testPartition(): Unit =
     assertEquals((List(1,2), List(3,4)), reference.partition(_ <= 2))

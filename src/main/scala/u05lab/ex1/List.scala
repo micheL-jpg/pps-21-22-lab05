@@ -69,6 +69,17 @@ enum List[A]:
     for i <- 0 until length do l = (get(i).get, i) :: l
     l.reverse()
 
+  def zipRightWithFold: List[(A, Int)] =
+    foldLeft((Nil[(A, Int)](), 0))((tuple, e) => (tuple._1 append List((e, tuple._2)), tuple._2+1))._1
+    
+  def zipRightWithMap: List[(A, Int)] =
+    var c = -1
+    def f(e: A): (A, Int) =
+      c = c + 1
+      (e, c)
+      
+    map(f)
+
   def partition(pred: A => Boolean): (List[A], List[A]) =
     (this.filter(pred), this.filter(!pred(_)))
 
@@ -82,8 +93,8 @@ enum List[A]:
 
   /** @throws UnsupportedOperationException if the list is empty */
   def reduce(op: (A, A) => A): A = this match
-    case Nil() => throw UnsupportedOperationException()
     case h :: t => t.foldLeft(h)(op)
+    case Nil() => throw UnsupportedOperationException()
 
   def takeRight(n: Int): List[A] =
     reverse().zipRight.filter((_,c) => c < n).map((e,_) => e).reverse()
