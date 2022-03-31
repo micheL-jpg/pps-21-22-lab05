@@ -71,18 +71,18 @@ enum List[A]:
 
   def zipRightWithFold: List[(A, Int)] =
     foldLeft((Nil[(A, Int)](), 0))((tuple, e) => (tuple._1 append List((e, tuple._2)), tuple._2+1))._1
-    
+
   def zipRightWithMap: List[(A, Int)] =
     var c = -1
     def f(e: A): (A, Int) =
       c = c + 1
       (e, c)
-      
+
     map(f)
 
   def partition(pred: A => Boolean): (List[A], List[A]) =
     (this.filter(pred), this.filter(!pred(_)))
-    
+
   def partitionWithFold(pred: A => Boolean): (List[A], List[A]) =
     foldLeft((Nil(), Nil()))((tuple, e) => if pred(e) then (tuple._1 append List(e), tuple._2) else (tuple._1, tuple._2 append List(e)))
 
@@ -90,7 +90,7 @@ enum List[A]:
     def _span(l: List[A], temp: List[A]): (List[A], List[A]) = l match
       case h :: t if pred(h) => _span(t, temp append List(h))
       case h :: t => (temp, h :: t)
-      case _ => (l, Nil())
+      case _ => (this, Nil())
 
     _span(this, Nil())
 
