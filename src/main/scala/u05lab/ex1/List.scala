@@ -94,6 +94,14 @@ enum List[A]:
 
     _span(this, Nil())
 
+  def spanWithFold(pred: A => Boolean): (List[A], List[A]) =
+    var flag = true
+    def f(tuple: (List[A], List[A]), e: A): (List[A], List[A]) = tuple match
+      case (tr, fa) if flag && pred(e) => (tr append List(e), fa)
+      case (tr, fa) => flag = false; (tr, fa append List(e))
+      
+    foldLeft((Nil(), Nil()))(f)
+
   /** @throws UnsupportedOperationException if the list is empty */
   def reduce(op: (A, A) => A): A = this match
     case h :: t => t.foldLeft(h)(op)
