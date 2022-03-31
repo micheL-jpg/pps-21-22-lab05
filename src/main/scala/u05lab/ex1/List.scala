@@ -2,6 +2,8 @@ package u05lab.ex1
 
 import u05lab.ex1.List
 
+import scala.annotation.tailrec
+
 // Ex 1. implement the missing methods both with recursion or with using fold, map, flatMap, and filters
 // List as a pure interface
 enum List[A]:
@@ -74,11 +76,11 @@ enum List[A]:
 
   def zipRightWithMap: List[(A, Int)] =
     var c = -1
-    def f(e: A): (A, Int) =
+    def createTuple(e: A): (A, Int) =
       c = c + 1
       (e, c)
 
-    map(f)
+    map(createTuple)
 
   def partition(pred: A => Boolean): (List[A], List[A]) =
     (this.filter(pred), this.filter(!pred(_)))
@@ -87,6 +89,7 @@ enum List[A]:
     foldLeft((Nil(), Nil()))((tuple, e) => if pred(e) then (tuple._1 append List(e), tuple._2) else (tuple._1, tuple._2 append List(e)))
 
   def span(pred: A => Boolean): (List[A], List[A]) =
+    @tailrec
     def _span(l: List[A], temp: List[A]): (List[A], List[A]) = l match
       case h :: t if pred(h) => _span(t, temp append List(h))
       case h :: t => (temp, h :: t)
@@ -96,11 +99,11 @@ enum List[A]:
 
   def spanWithFold(pred: A => Boolean): (List[A], List[A]) =
     var flag = true
-    def f(tuple: (List[A], List[A]), e: A): (List[A], List[A]) = tuple match
+    def foldElementInTuple(tuple: (List[A], List[A]), e: A): (List[A], List[A]) = tuple match
       case (tr, fa) if flag && pred(e) => (tr append List(e), fa)
       case (tr, fa) => flag = false; (tr, fa append List(e))
-      
-    foldLeft((Nil(), Nil()))(f)
+
+    foldLeft((Nil(), Nil()))(foldElementInTuple)
 
   /** @throws UnsupportedOperationException if the list is empty */
   def reduce(op: (A, A) => A): A = this match
