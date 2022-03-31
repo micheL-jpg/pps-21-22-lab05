@@ -64,6 +64,9 @@ enum List[A]:
     case h :: t if f.isDefinedAt(h) => f(h) :: t.collect(f)
     case h :: t => t.collect(f)
     case _ => Nil()
+    
+  def collectWithFold[B](f: PartialFunction[A, B]): List[B] =
+    foldRight(Nil())((e, l) => if f.isDefinedAt(e) then f(e) :: l else l)
 
   /** EXERCISES */
   def zipRight: List[(A, Int)] =
