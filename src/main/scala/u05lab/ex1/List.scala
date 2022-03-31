@@ -60,14 +60,6 @@ enum List[A]:
 
   def reverse(): List[A] = foldLeft[List[A]](Nil())((l, e) => e :: l)
 
-  def collect[B](f: PartialFunction[A, B]): List[B] = this match
-    case h :: t if f.isDefinedAt(h) => f(h) :: t.collect(f)
-    case h :: t => t.collect(f)
-    case _ => Nil()
-    
-  def collectWithFold[B](f: PartialFunction[A, B]): List[B] =
-    foldRight(Nil())((e, l) => if f.isDefinedAt(e) then f(e) :: l else l)
-
   /** EXERCISES */
   def zipRight: List[(A, Int)] =
     var l: List[(A, Int)] = Nil()
@@ -82,7 +74,6 @@ enum List[A]:
     def createTuple(e: A): (A, Int) =
       c = c + 1
       (e, c)
-
     map(createTuple)
 
   def partition(pred: A => Boolean): (List[A], List[A]) =
@@ -124,6 +115,14 @@ enum List[A]:
       case (e, c) if c > length - n - 1 => e
     }
     zipRight.collect(f)
+
+  def collect[B](f: PartialFunction[A, B]): List[B] = this match
+    case h :: t if f.isDefinedAt(h) => f(h) :: t.collect(f)
+    case h :: t => t.collect(f)
+    case _ => Nil()
+
+  def collectWithFold[B](f: PartialFunction[A, B]): List[B] =
+    foldRight(Nil())((e, l) => if f.isDefinedAt(e) then f(e) :: l else l)
 
 // Factories
 object List:
